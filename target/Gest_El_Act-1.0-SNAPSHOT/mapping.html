@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+-->
+<html
+    >
+    <head>
+        <title>Mapping</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+  integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+  crossorigin=""></script>
+  <link rel="stylesheet" href="/resources/leaflet.css" />
+<script src="/resources/leaflet.js"></script>
+          <!-- Une feuille de style éventuelle -->
+        <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css" href="/resources/Leaflet.markercluster-0.2/dist/MarkerCluster.css" />
+<link rel="stylesheet" type="text/css" href="/resources/Leaflet.markercluster-0.2/dist/MarkerCluster.Default.css" />
+        <script src='/resources/Leaflet.markercluster-0.2/dist/leaflet.markercluster.js'></script>
+
+    </head>
+    <body>
+        <!-- Le conteneur de notre carte (avec une contrainte CSS pour la taille) -->
+        <div id="macarte" style="width:1200px; height:550px"></div>
+        <script>
+        var carte = L.map('macarte', { /* use the same name as your <div id=""> */
+  center: [6.1825, 1.1774], /* set GPS Coordinates */
+  zoom: 15, /* define the zoom level */
+  zoomControl: true, /* false = no zoom control buttons displayed */
+  scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
+});
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(carte);
+				
+var marker = L.marker([6.18253, 1.21451])
+
+var marker1 = L.marker([ 6.1791785, 1.2127032], {draggable:'true'}).bindPopup("").addTo(carte);
+
+marker1.bindPopup(''); // Je ne mets pas de texte par défaut
+var mapopup = marker1.getPopup();
+mapopup.setContent('Pharmacie Du CHU Campus, N1, Tokoin-Lycée, 5e Arr., Lomé, 05 BP 941, Togo'); // je personnalise un peu avant d'afficher 
+marker1.openPopup();
+marker1.on('dragend', relachement);
+
+
+
+
+</script>
+    </body>
+</html>

@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pri="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./resources/templates/Common.xhtml">
+
+    <ui:param name="titlePage" value="Administration"/>
+    <ui:define name="Contents">
+        <div class="page-title" > 
+            <div class="title-env"> 
+                <h3 class="title"  style="color: #30a; margin-left: 200px"> GESTION DES UTILISATEURS </h3> 
+            </div> 
+            <div class="breadcrumb-env"> 
+                <ol class="breadcrumb bc-1" > 
+                    <li> <a href="#"><i class="fa-home"></i>Home</a> </li> 
+                    <li class="active"> <strong>Administration</strong> </li> 
+                </ol> 
+            </div> 
+        </div>
+        <h:form id="form">
+            <pri:growl id="growl" showDetail="true" autoUpdate="true" life="3500" />
+        </h:form>
+
+        <div class="row">
+            <div class="panel panel-default panel-tabs">
+                
+                <div class="panel-heading"> 
+
+                    <div class="panel-options pull-left"> 
+                        <ul class="nav nav-tabs"> 
+                            <li class="active"> <a href="#EnregUser" data-toggle="tab" style="color: #00f"><strong>UTIILISATEURS</strong> </a> </li>                             
+                            <li> <a href="#AttribDroit" data-toggle="tab" style="color: #00f"><strong>ATTRIBUTION PROFILS</strong></a> </li>
+                            <li> <a href="#EnregDroit" data-toggle="tab" style="color: #00f"><strong>CREATION PROFILS</strong></a> </li>
+                        </ul>
+                    </div> 
+                </div>
+                
+                 <div class="panel-body">
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="EnregUser">
+                            <h:form class="form-horizontal" id="utilisateurForm">
+                                <h:inputHidden value="#{AdministrationManager.utilisateur.id}"/>
+                                <br/>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Nom *"/>
+                                        <div class="col-sm-10">
+                                            <h:inputText  value="#{AdministrationManager.utilisateur.nom}" class="form-control"/>
+                                        </div>                                            
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Prenom *"/>
+                                        <div class="col-sm-10">
+                                            <h:inputText  value="#{AdministrationManager.utilisateur.prenom}" class="form-control"/>
+                                        </div>                                            
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Sexe *"/>
+                                        <div class="col-sm-10">
+                                            <h:selectOneMenu value="#{AdministrationManager.utilisateur.sexe}" class="form-control right-border form-focus-white">
+                                                <f:selectItem itemValue="M" itemLabel="M" />
+                                                <f:selectItem itemValue="F" itemLabel="F" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Contact *"/>
+                                        <div class="col-sm-10">
+                                            <pri:inputText value="#{AdministrationManager.utilisateur.contact}"  class="form-control">
+                                                <!-- <pri:keyFilter regEx="/[0-9]/i"/>-->
+                                            </pri:inputText>
+                                        </div>                                            
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Adresse *"/>
+                                        <div class="col-sm-10">
+                                            <h:inputText value="#{AdministrationManager.utilisateur.adresse}"  class="form-control"/>
+                                        </div>                                            
+                                    </div>    
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Login *"/>
+                                        <div class="col-sm-10">
+                                            <h:inputText value="#{AdministrationManager.utilisateur.login}"  class="form-control" disabled="#{AdministrationManager.disAdmin}"/>                                                   
+                                        </div>                                            
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Actif *"/>
+                                        <div class="col-sm-10">
+                                            <h:selectBooleanCheckbox value="#{AdministrationManager.utilisateur.actif}" disabled="#{AdministrationManager.disAdmin}"/>
+                                        </div>                           
+                                    </div>
+                                </div>
+                               
+                                <div class="pull-right">
+                                    <h:commandButton  class="btn btn-lg btn-white" value="Annuler" action="#{AdministrationManager.annulerUtilisateur()}">
+                                        <pri:ajax update="@form"/>
+                                    </h:commandButton>
+                                    <h:commandButton  class="btn btn-lg btn-success" value="Valider" action="#{AdministrationManager.ajouterUtilisateur()}">
+                                        <pri:ajax update="@form,:attribDroitForm,:form:growl," process="@form"/>        
+                                    </h:commandButton>                                                              
+                                </div>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                
+                                <pri:dataTable id="utilisateurDT" var="utilisateur" value="#{AdministrationManager.utilisateurListeSansAdmin}" 
+                                               widgetVar="utilWV" 
+                                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                               rowsPerPageTemplate="5,10,15"
+                                               emptyMessage="La liste est vide"  rows="5" paginator="true">
+                                    <pri:column filterBy="#{utilisateur.nom}" headerText="Nom" filterMatchMode="contains">                       
+                                        <h:outputText value="#{utilisateur.nom}" />
+                                    </pri:column>
+
+                                    <pri:column filterBy="#{utilisateur.prenom}" headerText="Prénom" filterMatchMode="contains">                       
+                                        <h:outputText value="#{utilisateur.prenom}" />
+                                    </pri:column>
+
+                                    <pri:column filterBy="#{utilisateur.login}"  headerText="Nom d'utilisateur" filterMatchMode="contains">                           
+                                        <center><h:outputText value="#{utilisateur.login}" /></center>                                          
+                                    </pri:column>
+
+                                    <pri:column  headerText="Actif" >                                       
+                                        <center><h:outputText value="#{AdministrationManager.actifLabel(utilisateur.actif)}"/></center>                                          
+                                    </pri:column>
+
+                                    <pri:column  headerText="Actions">                           
+
+                                        <h:commandButton value="Modifier" action="#{AdministrationManager.renvoieUtilisateur(utilisateur)}" class="btn btn-turquoise">
+                                            <pri:ajax update="@form"/>
+                                        </h:commandButton>
+
+                                        <h:commandButton value="Réinit." action="#{AdministrationManager.resetPasswordUser(utilisateur)}" class="btn btn-default" title="RÃ©initialiser le mot de passe"/>
+
+                                    </pri:column>
+
+                                </pri:dataTable>   
+</h:form>
+                       </div>
+                        
+                         <div class="tab-pane" id="AttribDroit">
+                             <br/>
+                             <h:form class="form-horizontal" id="attribDroitForm">
+                                  <div class="form-group">
+                                    <h:outputText  class="col-sm-2 control-label" style="color: #000" value="Choisir l'utilisateur"/>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <h:selectOneMenu id="userProfilId" value="#{AdministrationManager.utilisateurProfil}"  class="form-control right-border form-focus-white" converter="omnifaces.SelectItemsIndexConverter">
+                                                <f:selectItem itemLabel="Selectionner un utilisateur" itemValue="#{null}" noSelectionOption="true"/>
+                                               
+                                               <!--<f:selectItems value="#{AdministrationManager.utilisateurListeSansAdmin}" var="user"   itemLabel="#{user.login}" itemValue="#{user}"/>-->
+                                            </h:selectOneMenu>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-white" type="button" data-toggle="modal" data-target="#SearchUser" style="height: 31px;">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="form-group">
+                                    <h:outputText  class="col-sm-2 control-label" style="color: #000" value="Choisir le Profil"/>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu id="profUserCombId" value="#{AdministrationManager.utilisateurProfil.profil}" class="form-control" converter="omnifaces.SelectItemsIndexConverter" >
+                                            <f:selectItem itemLabel="Selectionner un profil" itemValue="#{null}" noSelectionOption="true"/>
+                                           <!-- <f:selectItems var="prof" value="#{AdministrationManager.profilListe}" itemValue="#{prof}" itemLabel="#{prof.nomProf}"/>-->
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                 
+                                     <div class="pull-right">
+                                    <h:commandButton  class="btn btn-lg btn-white" value="Annuler" action="#{AdministrationManager.annulerUtilisateurDroit()}">
+                                        <pri:ajax update="@form"/>
+                                    </h:commandButton>
+                                    <h:commandButton  class="btn btn-lg btn-success" value="Valider" action="#{AdministrationManager.affectationUtilisateurDroit()}">
+                                        <pri:ajax update="@form,:utilisateurForm:utilisateurDT,:form:growl" process="@form"/>
+                                    </h:commandButton>                                                              
+                                </div>
+
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <pri:dataTable id="affectationDT" var="affect" value="#{AdministrationManager.utilisateurListeSansAdmin}"
+                                               widgetVar="affectWV"                                 
+                                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                               rowsPerPageTemplate="5,10,15"
+                                               emptyMessage="La liste est vide"  rows="5" paginator="true">                                
+                                    <pri:column filterBy="#{affect.profil.nomProf}" headerText="Profil" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <h:selectOneMenu onchange="PF('affectWV').filter()" >
+                                                <f:selectItem itemLabel="Tous" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems var="prof2" value="#{AdministrationManager.profilListe}" itemValue="#{prof2.nomProf}" itemLabel="#{prof2.nomProf}"/>
+                                            </h:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{affect.profil.nomProf}" />
+                                    </pri:column>                                                                          
+                                    <pri:column filterBy="#{affect.login}" headerText="Nom d'utilisateur" >                                       
+                                        <center>
+                                            <h:outputText value="#{affect.login}" />
+                                        </center>
+                                    </pri:column>                                                             
+                                    <pri:column  headerText="Action">                           
+                                        <center><h:commandButton value="Modifier" action="#{AdministrationManager.renvoieUtilisateurDroit(affect)}" class="btn btn-turquoise">
+                                                <pri:ajax update="@form"/>
+                                            </h:commandButton></center>
+                                    </pri:column>
+                                </pri:dataTable>
+                             </h:form>
+                            
+                        </div>
+                        
+                        
+                         <div class="tab-pane" id="EnregDroit">
+                            <br/>
+                            <h:form class="form-horizontal" id="droitForm">
+                                <h:inputHidden value="#{AdministrationManager.profil.idProf}"/>
+                                <div class="form-group">
+                                    <h:outputText  class="col-sm-2 control-label" style="color: #000" value="Nom du Profil"/>
+                                    <div class="col-sm-10">
+                                        <h:inputText value="#{AdministrationManager.profil.nomProf}" class="form-control" />
+                                    </div>
+                                </div>
+                                
+                                  <div class="form-group">
+                                    <h:outputText  class="col-sm-2 control-label" style="color: #000" value="Droits"/>
+                                    <div class="col-sm-10">
+                                        <h:panelGroup layout="block" styleClass="selection">
+                                           <!-- <pri:selectManyCheckbox id="grid" columns="3" value="#{AdministrationManager.droitListeSource}" layout="responsive" converter="omnifaces.SelectItemsIndexConverter">
+                                                <f:selectItems value="#{AdministrationManager.droitListe}" var="grp" itemLabel="#{grp.libDroit}" itemValue="#{grp}" />
+                                            </pri:selectManyCheckbox> -->   
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                                
+                                 <div class="pull-right">
+                                    <h:commandButton  class="btn btn-lg btn-white" value="Annuler" action="#{AdministrationManager.annulerProfil()}">
+                                        <pri:ajax update="@form"/>
+                                    </h:commandButton>
+                                    <h:commandButton  class="btn btn-lg btn-success" value="Valider" action="#{AdministrationManager.ajouterProfil()}">
+                                        <pri:ajax update="@form,:attribDroitForm:profUserCombId,:form:growl" process="@form"/>
+                                    </h:commandButton>                                                              
+                                </div>
+
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                
+                                     <pri:dataTable id="profilDT" var="pr" value="#{AdministrationManager.profilListe}"
+                                               widgetVar="profilWV"                                 
+                                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                               rowsPerPageTemplate="5,10,15"
+                                               emptyMessage="La liste de profil est vide"  rows="5" paginator="true" >                                
+                                    <pri:column filterBy="#{pr.nomProf}" headerText="Profil" filterMatchMode="contains">        
+                                        <h:outputText value="#{pr.nomProf}" />
+                                    </pri:column>                                                                                 
+                                    <pri:column  headerText="Droit(s)">                           
+                                        <pri:dataList value="#{AdministrationManager.droitsUtilList(pr)}" var="infodroit" emptyMessage="Aucun droit enregistré">
+                                            #{infodroit.libDroit}
+                                        </pri:dataList>                                          
+                                    </pri:column>  
+                                    <pri:column  headerText="Action">                           
+                                        <center><h:commandButton value="Modifier" action="#{AdministrationManager.renvoieProfil(pr)}" class="btn btn-turquoise">
+                                                <pri:ajax update="@form"/>
+                                            </h:commandButton></center>
+                                    </pri:column>
+                                </pri:dataTable>
+                           </h:form>
+                          </div> 
+                        </div> 
+                </div>
+            </div>
+              <div class="modal fade" id="InfoReinit">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <h:form id="reinitForm">
+                            <div class="modal-header"> 
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                                <h4 class="modal-title">Comfirmation</h4> 
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Voulez vous reinitialiser le mot de passe de : <strong><h:outputText value="#{AdministrationManager.utilisateurPswd.login}"/></strong>  ?
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Annuler</button>        
+                                <pri:commandButton  styleClass="btn btn-info" value="Valider" action="#{AdministrationManager.confirmResetPasswordUser()}" />
+                            </div>
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+ <div class="modal fade" id="SearchUser"> 
+                <div class="modal-dialog"> 
+                    <div class="modal-content"> 
+                        <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                            <h4 class="modal-title">Utilisateur</h4> 
+                        </div> 
+                        <div class="modal-body"> 
+                            <h:form class="form-horizontal" id="searchUserForm">                                                                                                                
+                                <div class="row"> 
+                                    <div class="col-md-12">                          
+                                        <pri:dataTable var="search" value="#{AdministrationManager.utilisateurListeSansAdmin}" selectionMode="single" selection="#{AdministrationManager.utilisateur2}" rowKey="#{search.id}"
+                                                       widgetVar="searchUserWV" id="tableUser"                                 
+                                                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                       rowsPerPageTemplate="5,10,15"
+                                                       emptyMessage="La liste d'utilisateur est vide"  rows="5" paginator="true">                
+                                            <pri:ajax event="rowSelect" listener="#{AdministrationManager.onRowSelect}"  update=":attribDroitForm:userProfilId"/>
+                                            <pri:ajax event="rowUnselect" listener="#{AdministrationManager.onRowUnselect}"  update=":attribDroitForm:userProfilId"/>
+                                            <pri:column filterBy="#{search.login}" headerText="Nom d'utilisateur" filterMatchMode="contains">
+                                                <h:outputText value="#{search.login}" />
+                                            </pri:column>                                        
+                                        </pri:dataTable> 
+                                    </div>                                             
+                                </div>  
+                            </h:form>
+                        </div> 
+                        <div class="modal-footer"> 
+                            &nbsp;    
+                        </div>                            
+                    </div> 
+                </div> 
+            </div>
+
+            </div>
+    </ui:define>
+
+</ui:composition>

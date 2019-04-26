@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pri="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./resources/templates/Common.xhtml">
+
+    <ui:param name="titlePage" value="Commandes"/>
+    <ui:define name="Contents">
+       
+         <h:head>
+        
+    </h:head>
+            <h:body style='background-image: url(/resources/images/nature3.jpg)'>  
+        <h:form id="form">
+            <pri:growl id="growl" showDetail="true" autoUpdate="true" life="3500" />
+        </h:form>
+         <div class="row">
+            <div class="panel panel-default panel-tabs">
+                
+                <div class="panel-heading"> 
+
+                    <div class="panel-options pull-left"> 
+                        <ul class="nav nav-tabs"> 
+                            <li class="active"> <a href="#EnregPharma" data-toggle="tab" style="color: #00f"><strong>COMMANDES</strong> </a> </li>                             
+                            <li> <a href="#RechPharma" data-toggle="tab" style="color: #00f"><strong>RECHERHCES</strong></a> </li>
+                            
+                        </ul>
+                    </div> 
+                </div>
+                 <div class="panel-body">
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="EnregPharma">
+                            <h:form class="form-horizontal" id="PharmaForm">
+       <pri:graphicImage id="cach" value="/resources/images/pictures/3.jpg" width="210" height="100" alt="" />
+                     
+                                <p class="flotte">
+<pri:graphicImage id="ca" value="/resources/images/pictures/toto.jpg"  width="210" height="100" alt="" />
+</p>
+                                <h:inputHidden value="#{AdministrationManager.utilisateur.id}"/>
+                                <br/>
+                                 <br/>
+                                  <br/>
+
+
+    
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Nom de la commande*"/>
+                                        <div class="col-sm-10">
+                                            <h:inputText  value="#{AdministrationManager.utilisateur.nom}" class="form-control"/>
+                                        </div>                                            
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Nom de l'exemplaire*"/>
+                                        <div class="col-sm-10">
+                                             <h:inputText  value="#{AdministrationManager.utilisateur.nom}" class="form-control"/>
+                                        </div>                                            
+                                    </div>
+
+                                <div class="pull-right">
+                                    <h:commandButton  class="btn btn-lg btn-white" value="Annuler" action="#{AdministrationManager.annulerUtilisateur()}">
+                                        <pri:ajax update="@form"/>
+                                    </h:commandButton>
+                                    <h:commandButton  class="btn btn-lg btn-success" value="Valider" action="#{AdministrationManager.ajouterUtilisateur()}">
+                                        <pri:ajax update="@form,:form:growl," process="@form"/>        
+                                    </h:commandButton>                                                              
+                                </div>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                
+                                <pri:dataTable id="utilisateurDT" var="utilisateur" value="#{AdministrationManager.utilisateurListeSansAdmin}" 
+                                               widgetVar="utilWV" 
+                                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                               rowsPerPageTemplate="5,10,15"
+                                               emptyMessage="La liste est vide"  rows="5" paginator="true">
+                                    <pri:column filterBy="#{utilisateur.nom}" headerText="Nom de la commande" filterMatchMode="contains">                       
+                                        <h:outputText value="#{utilisateur.nom}" />
+                                    </pri:column>
+
+                                    <pri:column filterBy="#{utilisateur.prenom}" headerText="Exemplaire" filterMatchMode="contains">                       
+                                        <h:outputText value="#{utilisateur.prenom}" />
+                                    </pri:column>
+
+                                    <pri:column filterBy="#{utilisateur.login}"  headerText="Nom d'utilisateur" filterMatchMode="contains">                           
+                                        <center><h:outputText value="#{utilisateur.login}" /></center>                                          
+                                    </pri:column>
+
+                                   
+
+                                    <pri:column  headerText="Actions">                           
+
+                                        <h:commandButton value="Modifier" action="#{AdministrationManager.renvoieUtilisateur(utilisateur)}" class="btn btn-turquoise">
+                                            <pri:ajax update="@form"/>
+                                        </h:commandButton>
+
+                                        <h:commandButton value="Supprimer" action="#{AdministrationManager.resetPasswordUser(utilisateur)}" class="btn btn-default" title="RÃ©initialiser le mot de passe"/>
+
+                                    </pri:column>
+
+                                </pri:dataTable>  
+                                </div>
+                   </h:form>
+                  </div> 
+                </div> 
+                </div>
+               </div>
+             </div>
+        </h:body>  
+        </ui:define>
+
+</ui:composition>
+
+  <!--  <div class="form-group">
+                                        <h:outputLabel  class="col-sm-2 control-label" style="color: #000" value="Sexe *"/>
+                                        <div class="col-sm-10">
+                                            <h:selectOneMenu value="#{AdministrationManager.utilisateur.sexe}" class="form-control right-border form-focus-white">
+                                                <f:selectItem itemValue="M" itemLabel="M" />
+                                                <f:selectItem itemValue="F" itemLabel="F" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>-->

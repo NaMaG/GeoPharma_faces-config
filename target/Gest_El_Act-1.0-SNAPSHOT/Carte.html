@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    <!--
+            Inclusion de la bibliothèque Leaflet et sa feuille de style.
+            L'include du js pourrait aussi être fait a la fin du <body>
+        -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
+
+    <!-- Une feuille de style éventuel -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>Carte</title>
+  </head>
+
+  <body>
+    <!-- Le conteneur de notre carte (avec une contrainte CSS pour la taille -->
+    <div id="macarte" style="width:545px; height:490px"></div>
+
+    <script>
+      var carte = L.map('macarte').setView([46.5630104, 1.4846608], 6);
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+       
+      }).addTo(carte);
+      
+      // Notre cluster
+      var markers = L.markerClusterGroup();
+      // Nos marqueurs
+			var marker1 = L.marker([46.6835956, -0.4137665]);
+      var marker2 = L.marker([46.6935956, -0.4237665]);
+      var marker3 = L.marker([46.6835956, -0.4237665]);
+      var marker4 = L.marker([46.6935956, -0.4137665]);
+      var marker5 = L.marker([46.6885956, -0.4187665]);
+      opensitmap123
+      // On ajoute les marqueurs au cluster
+      markers.addLayer(marker1);
+      markers.addLayer(marker2);
+      markers.addLayer(marker3);
+      markers.addLayer(marker4);
+      markers.addLayer(marker5);
+      
+      // On affiche le cluster
+      carte.addLayer(markers);
+      
+      
+      var mymap = L.map('macarte', { /* use the same name as your <div id=""> */
+  center: [8.6195431, 0.824782], /* set GPS Coordinates */
+  zoom: 17, /* define the zoom level */
+  zoomControl: false, /* false = no zoom control buttons displayed */
+  scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
+});
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=XXX-YOUR-MAPBOX-ACCESS-TOKEN-XXX', { /* set your personal MapBox Access Token */
+  maxZoom: 20, /* zoom limit of the map */
+  attribution: 'Données &copy; Contributeurs <a href="http://openstreetmap.org">OpenStreetMap</a> + ' +
+    '<a href="http://mapbox.com">Mapbox</a> | ' +
+    '<a href="https://creativecommons.org/licenses/by/2.0/">CC-BY</a> ' +
+    'Guillaume Rouan 2016', /* set the map's caption */
+    id: 'mapbox.streets' /* mapbox.light / dark / streets / outdoors / satellite */
+}).addTo(mymap);
+
+L.marker([8.6195431, 0.824782]).addTo(mymap); 
+    </script>
+  </body>
+
+</html>
